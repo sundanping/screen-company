@@ -1,47 +1,303 @@
 <template>
   <article class="lists">
-<div class="contents">
+<div class="contents" :style="{width: '100%', height: '100%'}">
   <div id="myChart1" ></div>
+  <!--<h1>{{message}}</h1>-->
 </div>
+
   </article>
 </template>
 <script>
   export default {
     name: 'appSeven',
+    props:['message'],
     data() {
       return {
-       msg: [
-          {
-            type: 'value',
-            name: '数量i',
-            axisLine: {
-              lineStyle: {
-                color: ['#71a4f2'],
-                width: '1',
-                type: 'solid'
-              }
-            },
-            axisTick: {
-              show: false,
-              alignWithLabel: true
-            },
-            splitLine: {
-              lineStyle: {
-                color: ['rgba(113,164,242,0.3)'],
-                width: '1',
-                type: 'dashed'
-              }
-            },
+        option :{
+          title: {
+            text: '堆叠区域图'
+          },
+          color: [ '#61F27E', '#F4C41B', '#FC6701'],
+          tooltip : {
+            trigger: 'axis',
             axisPointer: {
+              type: 'cross',
+              label: {
+                backgroundColor: '#6a7985'
+              }
+            }
+          },
+          legend: {
+            textStyle: {
+              color: '#fff'
+            },
+            data:['安装量', '活跃用户', '启动次数']
+          },
+          toolbox: {
+            feature: {
+              saveAsImage: {}
+            }
+          },
+          grid: {
+            left: '7%',
+            right: '7%',
+            bottom: '12%',
+            containLabel: true
+          },
+          xAxis: [
+            {
+              name: '日期',
+              boundaryGap: false,
+              splitLine: {//网格线
+                lineStyle: {// 网格线color
+                  color: ['rgba(113,164,242,0.3)']
+                },
+                width: '1',
+                type: 'solid',
+                show: true
+              },
+
+              axisLine: {
+                lineStyle: {
+                  color: ['rgb(113,164,242,0.3)'],
+                  width:'2',
+                  type: 'solid'
+                }
+              },
+              saveAsImage:true,
+              axisTick: {
+                show: true,
+                alignWithLabel: true
+              },
+              data: ['08-23', '09-24', '09-25', '09-26', '09-27', '09-28', '09-29']
+            }
+          ],
+          yAxis: [
+        {
+          type: 'value',
+          name: '数量',
+          axisLine: {
+            lineStyle: {
+              color: ['#71a4f2'],
+              width: '2',
+              type: 'solid'
+            }
+          },
+          axisTick: {
+            show: false,
+            alignWithLabel: true
+          },
+          splitLine: {
+            lineStyle: {
+              color: ['rgba(113,164,242,0.3)'],//网格线
+              width: '1',
+              type: 'solid',
               show: true
             }
+          },
+          axisPointer: {
+            show: true
           }
+        }
+      ],
+          series : [
+            {
+              name:'安装量',
+              type:'line',
+              stack: '总量',
+//              areaStyle: {normal: {}},
+              areaStyle: {
+                normal: {
+                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: '#61F27E'
+                  }, {
+                    offset: 1,
+                    color: '#223'
+                  }])
+                }
+              },
+              data:[120, 132, 101, 134, 90, 230, 210]
+            },
+            {
+              name:'活跃用户',
+              type:'line',
+              stack: '总量',
+//              areaStyle: {normal: {}},
+              areaStyle: {
+                normal: {
+                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color:  '#F4C41B'
+                  }, {
+                    offset: 1,
+                    color: '#223'
+                  }])
+                }
+              },
+              data:[220, 182, 191, 234, 290, 330, 310]
+            },
+            {
+              name:'启动次数',
+              type:'line',
+              stack: '总量',
+              areaStyle: {
+                normal: {
+                  color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color:  '#FC6701'
+                  }, {
+                    offset: 1,
+                    color: '#223'
+                  }])
+                }
+              },
+//              areaStyle: {normal: {}},
+              data:[150, 232, 201, 154, 190, 330, 410]
+            }
           ]
+        }
+
+//        option:{
+//          title: {
+//            text: '',
+//            color:'#fff'
+//          },
+//          color: ['#60f07c', '#f86600', '#fc8e26', '#14da7e'],
+//          legend: {
+//            center: 'center',
+//            top: '3',
+//            textStyle: {
+//              color: '#fff'
+//            },
+//            data: [ '安装量', '活跃用户', '启动次数']
+//          },
+//          toolbox: {
+//            feature: {
+//              saveAsImage: {}
+//            }
+//          },
+//          tooltip: {
+//            trigger: 'axis'
+//          },
+//          textStyle: {
+//            color: '#ffffff'
+//          },
+//          grid: {
+//            left: '7%',
+//            right: '7%',
+//            bottom: '12%',
+//            containLabel: true
+//          },
+//          xAxis: [
+//            {
+//              name: '日期',
+//              boundaryGap: false,
+//              splitLine: {//网格线
+//                lineStyle: {// 网格线color
+//                  color: ['rgba(113,164,242,0.3)']
+//                },
+//                width: '1',
+//                type: 'solid',
+//                show: true
+//              },
+//              axisLine: {
+//                lineStyle: {
+//                  color: ['rgb(113,164,242,0.3)'],
+//                  width:'2',
+//                  type: 'solid'
+//                }
+//              },
+//              saveAsImage:true,
+//              axisTick: {
+//                show: true,
+//                alignWithLabel: true
+//              },
+//              data: ['08-23', '09-24', '09-25', '09-26', '09-27', '09-28', '09-29']
+//            }
+//          ],
+//          yAxis: [
+//        {
+//          type: 'value',
+//          name: '数量',
+//          axisLine: {
+//            lineStyle: {
+//              color: ['#71a4f2'],
+//              width: '2',
+//              type: 'solid'
+//            }
+//          },
+//          axisTick: {
+//            show: false,
+//            alignWithLabel: true
+//          },
+//          splitLine: {
+//            lineStyle: {
+//              color: ['rgba(113,164,242,0.3)'],//网格线
+//              width: '1',
+//              type: 'solid',
+//              show: true
+//            }
+//          },
+//          axisPointer: {
+//            show: true
+//          }
+//        }
+//      ],
+//          series: [
+//            {
+//              name: '安装量',
+//              type: 'line',
+//              smooth: true,
+//              stack: '总量',
+//              areaStyle: {normal: {}},
+//              data: [65, 93, 62, 111, 31, 89, 114]
+//            },
+//            {
+//              name: '活跃用户',
+//              type: 'line',
+//              smooth: true,
+//              stack: '总量',
+//              areaStyle: {normal: {}},
+//              data: [42, 33, 222, 31, 61, 63, 114]
+//            },
+//            {
+//              name: '启动次数',
+//              type: 'line',
+//              smooth: true,
+//              stack: '总量',
+//              areaStyle: {normal: {}},
+//              data: [88, 63, 12, 111, 11, 113, 64]
+//            }
+//          ]
+//        }
       }
     },
     mounted() {
-      let clientW = document.body.clientWidth
-      let clientH = document.body.clientHeight
+//    注册 获取时间 APP 安装量  启动次数  活跃用户  BEGIN
+      let time =[]
+      let install =[]
+      let pv =[]
+      let uv =[]
+      JSON.parse(this.message.data[0].app_install_lastdays).forEach(function(item){
+        time.unshift(item.datetime)
+        install.unshift(item.amount)
+      })
+      JSON.parse(this.message.data[0].app_pv_lastdays).forEach(function(item){
+        pv.unshift(item.amount)
+      })
+      JSON.parse(this.message.data[0].app_uv_lastdays).forEach(function(item){
+        uv.unshift(item.amount)
+      })
+      this.option.xAxis[0].data.splice(0,7, ...time)
+      this.option.series[0].data.splice(0,7, ...install)
+      this.option.series[1].data.splice(0,7, ...pv)
+      this.option.series[2].data.splice(0,7, ...uv)
+
+//    注册 获取时间 APP 安装量  启动次数  活跃用户  END
+
+      let clientW = window.innerwidth
+      let clientH = window.innerHeight
       document.getElementById('myChart1').style.width=clientW*0.47+ 'px'
       document.getElementById('myChart1').style.height=clientH*0.3+ 'px'
       this.drawLine()
@@ -51,86 +307,11 @@
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('myChart1'))
         // 绘制图表
-        myChart.setOption({
-          title: {
-            text: '堆叠区域图',
-            color:'#fff'
-          },
-          color: ['#8d6cf9', '#f36764', '#fc8e26', '#14da7e'],
-          legend: {
-            center: 'center',
-            top: '3',
-            textStyle: {
-              color: '#fff'
-            },
-            data: [ '视频', '专题', '图集']
-          },
-          toolbox: {
-            feature: {
-              saveAsImage: {}
-            }
-          },
-          tooltip: {
-            trigger: 'axis'
-          },
-          textStyle: {
-            color: '#ffffff'
-          },
-          grid: {
-            left: '7%',
-            right: '7%',
-            bottom: '12%',
-            containLabel: true
-          },
-          xAxis: [
-
-            {
-              type: 'category',
-              name: '日期',
-              boundaryGap: false,
-              axisLine: {
-                lineStyle: {
-                  color: ['#71a4f2'],
-                  type: 'solid'
-                }
-              },
-              saveAsImage:true,
-              axisTick: {
-                show: false,
-                alignWithLabel: true
-              },
-              data: ['09-23', '09-24', '09-25', '09-26', '09-27', '09-28', '09-29']
-            }
-          ],
-          yAxis: this.msg,
-          series: [
-
-            {
-              name: '视频',
-              type: 'line',
-              smooth: true,
-              stack: '总量',
-              areaStyle: {normal: {}},
-              data: [4, 3, 2, 1, 1, 3, 114]
-            },
-            {
-              name: '专题',
-              type: 'line',
-              smooth: true,
-              stack: '总量',
-              areaStyle: {normal: {}},
-              data: [4, 3, 2, 1, 1, 3, 4]
-            },
-            {
-              name: '图集',
-              type: 'line',
-              smooth: true,
-              stack: '总量',
-              areaStyle: {normal: {}},
-              data: [4, 3, 2, 1, 1, 3, 4]
-            }
-          ]
-        })
+//        window.onresize = myChart.resize//自适应
+         window.addEventListener("resize",function(){
+            myChart.resize()
+       })
+        myChart.setOption(this.option)
       }
     }
   }
@@ -142,13 +323,21 @@
     flex-basis: 100%;
     position: relative;
     padding: 5px;
-    overflow: hidden;}
-  .contents{
-    height: 100% ;
+    overflow: hidden;
+  }
+  .lists>div{
+    float: left;
     width: 100%;
+    overflow: hidden;
+    /*溢出处理*/
   }
-  .contents>#myChart1{
-    min-width: 200px;
-  }
+
+  /*.contents{*/
+    /*height: 100% ;*/
+    /*width: 100%;*/
+  /*}*/
+  /*.contents>#myChart1{*/
+    /*min-width: 200px;*/
+  /*}*/
 
 </style>

@@ -1,14 +1,12 @@
 <template>
-  <div class="lists">
-    <div id="mission" :style="{width: '100%', height: '100%'}">
-    </div>
+  <div style="color:red">
     <div class="lists-right">
       <div class="count-install">
         <h1>
           累计安装量{{install[0]}}
         </h1>
         <div style="background-color: #666;z-index: 5">
-         <div name="count" id="install" class="prediction-linear-user"></div>
+          <div name="count" id="install" class="prediction-linear-user"></div>
         </div>
       </div>
       <div class="count-install">
@@ -23,21 +21,20 @@
         <h1>
           累计注册量{{install[2]}}
         </h1>
-       <div style="background-color: #666">
-         <div  name="count" id="regist" class="prediction-linear-user"></div>
-       </div>
+        <div style="background-color: #666">
+          <div  name="count" id="regist" class="prediction-linear-user"></div>
+        </div>
       </div>
     </div>
   </div>
-
 </template>
+
 <script>
   export default {
-    name: 'totalApp',
-    props:['app-total'],
+    name: 'leiji',
     data() {
       return {
-//        lists: clue.data,
+        lists: clue.data,
         install: [232, 344, 453],
         ff: 298,//测试数据
         demoNum: [2323 , 5, 1],
@@ -56,7 +53,6 @@
             },
             data:['Android','IOS']
           },
-          calculable : true,
           series: [
             {
               name:'访问来源',
@@ -93,26 +89,32 @@
     created() {
     },
     mounted() {
-      this.getId('mission')
       let appData = this.appTotal
+//      console.log(appData)
+//      console.log(appData.data)
+      console.log(this.appTotal.data[0])
       this.option.series[0].data =[
         {value:appData.data[0].android_install_accumulate, name:'Android'},
         {value:appData.data[0].ios_install_accumulate, name:'IOS'}
       ]
-
-      setTimeout(this.getWidth, 500)
+//      this.install=[this.appTotal.data[0].app_pv_accumulate ,this.appTotal.data[0].app_install_accumulate,this.appTotal.data[0].member_register_accumulate ]
+      console.log(this.install)
+      setTimeout(this.getWidth, 2500)
       this.setHeight()
       let clientW = window.innerWidth
       let clientH = window.innerHeight
       this.getId('mission').style.width = clientW * 0.47 / 2 + 'px'
       this.getId('mission').style.height = clientH * 0.29 + 'px'
-
       this.drawLine()
     },
     computed: {},
     methods: {
+      getId :v => document.getElementById(v),//获取ID
       getWidth() {
-        this.install.splice(0, 3, this.appTotal.data[0].app_install_accumulate,this.appTotal.data[0].app_pv_accumulate,this.appTotal.data[0].member_register_accumulate)//监听到数组变化渲染到页面，或者页面头部渲染ff亦可
+//        console.log(this.install)
+//        this.install[1]= 604
+//        this.$set(this.install, 0, this.ff)//监听到数组变化渲染到页面，
+        this.install.splice(0, 3, ...this.demoNum)//监听到数组变化渲染到页面，或者页面头部渲染ff亦可
         this.setHeight()
       },
       setHeight() {
@@ -131,18 +133,15 @@
       drawLine() {
         let myChart = this.$echarts.init(document.getElementById('mission'))
         // 绘制图表
-        window.addEventListener("resize",function(){
-          myChart.resize()
-        })
         myChart.setOption(this.option)
       }
     },
     watch: {
-//      install:{
-//        handle:function(){
-//
-//        }
-//  }
+      install:{
+        handle:function(){
+
+        }
+      }
 //      appTotal(newVal,oldVal){
 //        let newarr=[
 //          {value:newVal.android_install_accumulate , name:'Android'},
@@ -159,80 +158,9 @@
     },
     update(){
     }
+
   }
 </script>
-<style scoped>
-  .grayscale{
-    -webkit-filter:grayscale(1);
-    filter:grayscale(1);
-  }
+<style type="scoped">
 
-  .lists {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    position: relative;
-    padding: 5px;
-  }
-  .lists:before{
-    clear: both;
-    overflow: hidden;
-    content: '';
-  }
-  .lists > div {
-
-    flex: 1;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .contents {
-    height: 100%;
-    width: 100%;
-  }
-
-  .contents > #mission {
-    /*min-width: 200px;*/
-    color: red;
-  }
-
-  .lists-right {
-    padding: 3% 20px;
-  }
-
-  .count-install {
-    flex-direction: column;
-    height: 20%;
-    margin-left: 15%;
-    margin-top: 5%;
-    overflow: hidden;
-  }
-
-  .count-install  div {
-    border-radius: 6px;
-    height: 12px;
-    /*width: 80%!important;*/
-    position: relative;
-
-  }
-  .count-install> div> div{
-    position:absolute;
-  }
-  h1 {
-    font-size: 18px;
-  }
-
-  .prediction-linear-user {
-    display: inline-block;
-    z-index: 10;
-    background: -webkit-linear-gradient(to right, #5c9dfc, #5d9afd); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(to right, #5c9dfc, #5d9afd); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(to right, #5c9dfc, #5d9afd); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, #5c9dfc, #5d9afd); /* 标准的语法（必须放在最后） */
-  }
 </style>
-<style>
-  #mission > div canvas
-  {
-  top: -14%!important;
-}</style>

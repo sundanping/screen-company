@@ -1,14 +1,18 @@
 <template>
   <article class="index" >
-    <nav :style="navBackground">导航栏</nav>
+    <nav id="nav" :style="navBackground">
+      导航栏
+    </nav>
     <!--bannner 图片BEGIN-->
     <section class="banner">
 
-      <router-link :to="{path:'/'+ bannerBackGround[0].name}"><div id="left" class="left" :style="bannerBackGround[0]"
-       @mouseenter="clearClock()" @mouseleave="startClock()">
-        <!--<div style="position: absolute">e</div>-->
-      </div></router-link>
-      <router-link :to="{path:'/'+ bannerBackGround[1].name}"><div id="middle" class="middle line-gradient"
+      <router-link :to="{path:'/'+ bannerBackGround[1].name}">
+          <div id="left" class="left transition-1s" :style="bannerBackGround[0]"
+             @mouseenter="clearClock()" @mouseleave="startClock()">
+         </div>
+      </router-link>
+      <router-link :to="{path:'/'+ bannerBackGround[0].name}">
+        <div style="    height: 539.274px" id="middle" class="middle line-gradient transition-1s"
            @mouseenter="clearClock()" @mouseleave="startClock()">
         <span class="border-left-top border-radius-product"></span>
         <span class="border-right-top border-radius-product "></span>
@@ -18,23 +22,35 @@
         <div class="inline-block" :style=[bannerBackGround[1]] ></div>
       </div></router-link>
       <router-link :to="{path:'/'+ bannerBackGround[2].name}">
-        <div  id="right" class="right" :style="bannerBackGround[2]" @click='reminder()'
+        <div  id="right" class="right transition-1s" :style="bannerBackGround[2]" @click='reminder()'
               @mouseenter="clearClock()" @mouseleave="startClock()">
         <span :class="reminders === true ?'reminder':null" style=" opacity: 0;position: absolute;top:350px;left:140px;border:1px solid #fff;padding:4px;">资源创建中...</span>
       </div></router-link>
     </section>
     <!--bannner 图片END-->
+    <!--今日统计-->
     <div class="count" style="color:#fff">
-      <div><div class="count-day" @mouseenter="warningMsg()" @mouseleave="restMessage()" data-tagName="today"
-                :class="(retote === true && tagName === 'today')?'retote':null">{{todayStatistics}}</div></div>
-      <div class="week">
-        <div :style="countBackground"  class="button-img"></div>
-        <div class="count-week" @mouseenter="warningMsg()" @mouseleave="restMessage()" data-tagName="week"
-             :class="(retote === true && tagName === 'week')?'retote':null" >本周统计</div>
-        <div :style="countBackground" class="button-img"></div>
+
+      <div  data-tagName="today" @mouseenter="hoverOnWeek()" @mouseleave="leaverOnWeek()" :style="dayBack" class="bg" style="text-align: center">
+        {{todayStatistics}}
+        <!--<div class="count-day" @mouseenter="warningMsg()" @mouseleave="restMessage()" data-tagName="today"-->
+                <!--:class="(retote === true && tagName === 'today')?'retote':null"></div>-->
       </div>
-      <div><div class="count-mouth" @mouseenter="warningMsg()" @mouseleave="restMessage()" data-tagName="mouth"
-                :class="(retote === true && tagName === 'mouth')?'retote':null">本月统计</div></div>
+      <div  data-tagName="week" @mouseenter="hoverOnWeek()" @mouseleave="leaverOnWeek()" :style="weekBack"   class="week">
+        <!--<div   class="button-img"></div>-->
+        <div :style="countBackground"></div>
+        本周统计
+        <div :style="countBackground"></div>
+        <!--<div class="count-week" @mouseenter="warningMsg()" @mouseleave="restMessage()" data-tagName="week"-->
+             <!--:class="(retote === true && tagName === 'week')?'retote':null" >本周统计</div>-->
+        <!--<div :style="countBackground" class="button-img"></div>-->
+      </div>
+      <div data-tagName="months" :style="monthsBack" @mouseenter="hoverOnWeek()" @mouseleave="leaverOnWeek()">
+        本月统计
+        <!--<div class="count-mouth" @mouseenter="warningMsg()" @mouseleave="restMessage()" data-tagName="mouth"-->
+                <!--:class="(retote === true && tagName === 'mouth')?'retote':null">本月统计-->
+        <!--</div>-->
+      </div>
     </div>
     <!--左右按钮-->
     <aside align="center" class="left-button" :style="buttonBackGround" @click="toLeft()">
@@ -57,6 +73,10 @@ export default {
       tagName: '',
       retote: false,
       reminders: false,
+      hoverd:false,
+      dayBack:'',
+      weekBack:'',
+      monthsBack:'',
       bannerInterval: null,
 //      bgimg: {
 //        backgroundImage: 'url(' + require('../assets/img/background-img.jpg') + ')',
@@ -64,26 +84,26 @@ export default {
 //        height: '100%'
 //      },
       navBackground: {
-        width: '180px',
-        height: '36px',
-        fontSize: '16px',
+        width: '360px',
+        height: '72px',
         backgroundRepeat: 'no-repeat',
         lineHeight: '30px',
         backgroundSize: '100% 100%',
+        top:0,
         backgroundImage: 'url(' + require('../assets/img/nav-background.png') + ')',
     },
       middleBackGround: {
-      borderImage: 'url(' + require('../assets/img/middle-border.png') + ')'
+      borderLeftImage: 'url(' + require('../assets/img/border-left.png') + ')'
 //        backgroundSize: '100% 100%'
       },
       bannerBackGround: [
         { backgroundImage: 'url(' + require('../assets/img/user.jpg') + ')',
           backgroundSize: '100% 100%',
-          name: 'user'
+          name: 'production'
         },
         { backgroundImage: 'url(' + require('../assets/img/middle.jpg') + ')',
           backgroundSize: '100% 100%',
-          name: 'production'},
+          name: 'user'},
         { backgroundImage: 'url(' + require('../assets/img/resource.jpg') + ')',
           backgroundSize: '100% 100%',
           name: ''}
@@ -91,6 +111,11 @@ export default {
           backgroundImage: 'url(' + require('../assets/img/oricle.png') + ')',
           backgroundSize: '100% 100%'
       },
+       weekBackGround: {
+        backgroundImage: 'url(' + require('../assets/img/bg-week.png') + ')',
+        backgroundSize: '100% 100%'
+    },
+//      /Users/sundanping/Documents/Project/screen/screen/src/assets/img/bg-week.png
       countBackground:  { backgroundImage: 'url(' + require('../assets/img/border-left.png') + ')',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: ' right',
@@ -99,19 +124,16 @@ export default {
     }
   },
   mounted () {
-//    this.banner()
+//    导航栏
+    document.getElementById('nav').style.lineHeight = document.getElementById('nav').offsetHeight+ 'px'
+//    console.log(document.getElementById('nav').offsetHeight)
     let w =document.getElementById('left').clientWidth
-    console.log(w)
     document.getElementById('left').style.height=w*82.6/62 + 'px'
     document.getElementById('right').style.height=w*82.6/62 + 'px'
     document.getElementById('middle').style.height=w*82.6/62 + 'px'
-    this.bannerInterval= setInterval(this.toLeft,3000)
-
+//    this.bannerInterval= setInterval(this.toLeft,3000)
   },
   methods: {
-//    banner () {
-//      console.log(234343)
-//    },
     toLeft () {
       let left = this.bannerBackGround[0]
       this.bannerBackGround =this.bannerBackGround.slice(1);
@@ -127,7 +149,7 @@ export default {
 //    一期栏目中暂时没有今日 本周 本月统计  提示信息
     warningMsg () {
       this.retote = true
-      this.tagName = event.currentTarget.dataset.tagname
+//      this.tagName = event.currentTarget.dataset.tagname
        this.currentText = event.currentTarget.innerHTML
       event.currentTarget.innerHTML = '模块创建中...'
     },
@@ -135,6 +157,20 @@ export default {
       this.tagName = ''
       this.retote = false
       event.currentTarget.innerHTML  = this.currentText
+    },
+    hoverOnWeek () {
+      if(event.currentTarget.dataset.tagname=='week'){
+        this.weekBack= this.weekBackGround
+      }else  if(event.currentTarget.dataset.tagname=='today'){
+        this.dayBack= this.weekBackGround
+      }else if(event.currentTarget.dataset.tagname=='months'){
+        this.monthsBack= this.weekBackGround
+      }
+    },
+    leaverOnWeek () {
+      this.dayBack= ''
+      this.weekBack= ''
+      this.monthsBack= ''
     },
     reminder () {
      let _this = this
@@ -157,17 +193,48 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
+
+
+@-webkit-keyframes fadeInOut {
+  0% {
+    opacity:1;
+  }
+  25% {
+    opacity:0;
+  }
+  50% {
+    opacity: 0;
+  }
+  75% {
+    opacity:1;
+  }
+}
+.transition-1s {
+  -webkit-animation-name: fadeInOut;
+  -webkit-animation-timing-function: ease-in-out;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+}
+
+
+
+
 .index{
   width:100%;
   height:100%;
 }
 nav{
   height:10%;
+  font-size: 36px;
   color:#fff;
   text-align: center;
   position: relative;
   left:50% ;
-  margin-left:-90px;
+  top:0!important;
+  font-weight: 600;
+  margin-left:-180px;
+  margin-top:0;
+  padding-top: 0;
 }
   section div{
     display: inline-block;
@@ -179,35 +246,37 @@ nav{
     padding-top:5%;
   }
 .count{
+  height:40px;
+  line-height:40px;
+  font-size: 2.2rem;
   display: flex;
   height:10%;
-  margin-left:15%;
-  margin-right:15%;
+  margin-top: 1rem;
+  margin-left:18%;
+  margin-right:18%;
 }
 .count>div{
   flex:1;
-  height:24px;
-  line-height: 24px;
+  height:4rem;
+  line-height: 4rem;
   text-align: center;
 }
-.count>div:first-child{
-  flex:1;
 
-}
-.count>div:last-child{
-  flex:1;
-
-}
 .count-day{
-
+  height:4rem;
+  font-size:2.2rem;
   width: 50%;
    float: right;
    position: relative;
- }
+
+}
 .week>div{
   display: inline-block;
 }
 .count-week{
+  background-color: #3a8ee6;
+  height:4rem;
+  font-size:2.2rem;
   width: 50%;
   position: relative;
   top:-5px;
@@ -218,7 +287,8 @@ nav{
 .count-mouth{
   width: 50%;
   float: left;
-
+  height:4rem;
+  font-size:2.2rem;
   position: relative;
 }
 .week>div{
@@ -236,7 +306,8 @@ nav{
   z-index:5;
   position: relative;
   right:-100px;
-  transform: perspective(800px) rotateY(18deg);
+  transform: perspective(800px) rotateY(15deg) rotateZ(0);
+  outline:1px solid transparent;
   margin-left:5%;
 
 }
@@ -244,11 +315,11 @@ nav{
   z-index:5;
   position: relative;
   left:-100px;
-  transform: perspective(800px) rotateY(-18deg);
+  transform: perspective(800px) rotateY(-15deg);
 }
 
 .middle{
-  z-index:10;
+  z-index:110;
   width: 30%;
   height:92%;
   position: relative;
@@ -275,12 +346,12 @@ middle>div{
 }
 /*按钮*/
   .left-button,.right-button{
-    width: 30px;
-    height:59px;
+    width: 60px;
+    height:118px;
   }
 .left-button>img,.right-button>img{
-  width: 50%;
-  height:50%;
+  width: 40%;
+  height:40%;
   position: absolute;
   top:0;
   left:-10px;
@@ -304,7 +375,6 @@ middle>div{
     height: 100%;
   }
 .line-gradient {
-
   border: 2px solid;
   border-image: -webkit-linear-gradient(to right, #5c9dfc, #48c8ef, #41d6eb, #5d9afd) 30 30;
   border-image: -moz-linear-gradient(to right, #5c9dfc, #48c8ef, #41d6eb, #5d9afd) 30 30;
@@ -378,5 +448,38 @@ middle>div{
       transform:rotateY(90deg)
     }
   }
+ .week>div{
+   width: 3px;
+   height:50px;
+   position: relative;
+   float: left;
+   left:0;
+   z-index: 344;
+ }
+.week>div:last-child{
+  width: 3px;
+  height:50px;
+  position: relative;
+  float: right;
+}
+  .bg{
+
+  }
 </style>
 
+<style >
+  /*日期选择器样式修改 BEGIN*/
+  input,button,select,textarea{outline:none;}
+
+  .el-button + .el-button span, .el-date-table td div span {
+    color: #5a5e66;
+  }
+
+  .prev-month div span, .next-month div span {
+    color: #b4bccc !important;
+  }
+  input[type='text']{
+    text-indent: 12px;
+  }
+  /*日期选择器样式修改 END*/
+</style>
