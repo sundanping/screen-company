@@ -28,7 +28,7 @@
           drawLine() {
             let myChart = this.$echarts.init(document.getElementById('press-number'))
             myChart.setOption({
-              color: ['#821B40', '#C4496F', '#DB9FBA'],
+              color: ['#DB9FBA', '#C4496F', '#821B40'],
               textStyle: {
                 color: '#fff'
               },
@@ -36,6 +36,7 @@
                 orient: 'vertical', // 图例列表的布局朝向。
                 x: 'right',
                 y: 'bottom',
+                top:'62%',
                 textStyle: {
                   color: '#fff'
                 },
@@ -48,21 +49,23 @@
                   radius: ['50%', '70%', '40%',], // 圆环
                   avoidLabelOverlap: false,
                   label: {
+                    emphasis: {
+                      show: true,
+                      textStyle: {
+                        fontSize: '30',
+                        fontWeight: 'bold'
+                      }
+                    },
                     normal: {
                       show: true,
                       formatter: ' {d}%',
+
                       textStyle: {
                         fontSize: '14',
                         fontWeight: 'bold'
                       }
                     },
-                    emphasis: {
-                      show: true,
-                      textStyle: {
-                        fontSize: '16',
-                        fontWeight: 'bold'
-                      }
-                    }
+
                   },  // 折线
                   labelLine: {
                     normal: {
@@ -83,6 +86,7 @@
       .lists{
         height: 100%;
         overflow: hidden;
+        padding-right: 12px;
       }
       #honor-roll canvas {
         /*top: -8%;*/

@@ -4,6 +4,7 @@
       <div class="block prediction-div">
         <span class="demonstration"> 截止时间：</span>
         <el-date-picker
+          style="background:none;"
           v-model="value1"
           align="right"
           type="date"
@@ -12,15 +13,23 @@
           :picker-options="pickerOptions1"
         >
         </el-date-picker>
-        <span v-if="warnSelectDate" class="red">请选择日期</span>
+        <!--<span v-if="warnSelectDate" class="red">请选择日期</span>-->
+        <span style="position: relative;margin-left:50px ;font-weight: bold;">预估结果:</span>
       </div>
+
       <!--预告目标-->
     </section>
     <section>
       <div class="prediction prediction-div">
         <div style=" display: inline-block; margin-bottom:4px;"> <span> 预估目标：</span>
           <input  class="prediction-result" v-model="goal" type="text" @focus="watchDate" @blur="watchSelf($event)">
-          <span class="red">{{warnGoal}}</span>
+          <!--<span class="red">{{warnGoal}}</span>-->
+          <span style="position: relative" class="can-finish"><span>可以完成</span>
+          <img v-if="canFinish==1" src="../../assets/img/can-t.png" alt="">
+        </span>
+          <span style="position: relative"  class="not-finish can-finish"><span>不能完成</span>
+           <img  v-if="canFinish==0" src="../../assets/img/not-f.png" alt="">
+        </span>
         </div>
         <!--<div style="display: inline-block ; margin-bottom:4px;"><span> 预估结果：</span>-->
           <!--<input style="color: red;" disabled="disabled" class="prediction-result" type="text" v-model="result">-->
@@ -33,13 +42,7 @@
         <span class="demonstration" style="opacity: 0"> 截止时间：</span>
         <input style="border: 0;" class="prediction-result prediction-linear"
           @click="sendInstall()"     value="提交评估" type="button">
-        <span style="position: relative" class="can-finish"><span>可以完成</span>
-          <img v-if="canFinish==1" src="../../assets/img/can-t.png" alt="">
-        </span>
-        <span style="position: relative"  class="not-finish can-finish"><span>不能完成</span>
-           <img  v-if="canFinish==0" src="../../assets/img/not-f.png" alt="">
 
-        </span>
       </div>
     </section>
   </article>
@@ -142,7 +145,7 @@
     border-radius: 4px;
     border: 1px solid #fff;
     display: inline-block;
-    background-color: rgba(232,232,232,.1);
+    background-color: rgba(232,232,232,0);
   }
   .prediction-result:active{
     transform:scale(1.01);

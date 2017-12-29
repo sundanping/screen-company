@@ -1,16 +1,16 @@
 <template>
   <div class="left-top8">
-    <div>
+    <div style="border-bottom: 1px solid #333;margin-bottom:1rem">
       <span>标题</span>
-      <span class="float-right">访问量</span>
+      <span class="float-right">发稿量</span>
     </div>
     <span v-for="i in 8">
       <div>
         <span>{{i}}.南京厚建</span>
-        <span class="float-right">3214</span>
+        <span class="float-right" > <img style="width: 1rem;height:1rem;margin-right:.4rem;" src="../../assets/img/read.png" alt="">3214</span>
       </div>
       <!--柱状图-->
-      <div style="background-color:#192a39;height:12px;border-radius: 1rem;margin:.5rem 0">
+      <div style="background-color:#192a39;height:12px;border-radius: 1rem;margin:-.2rem 0 .9rem ">
         <div :style="{width:(25+i)/33/0.01+'%'}" class="color-line"></div>
       </div>
      </span>
@@ -21,7 +21,7 @@
   export default{
     data() {
       return {
-
+//        backGroundSee:"url(" + require("../../assets/see.png") + ")"
       }
     },
     mounted() {

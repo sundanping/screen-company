@@ -29,7 +29,7 @@
       drawLine() {
         let myChart = this.$echarts.init(document.getElementById('visit-number'))
         myChart.setOption({
-          color: ['#003160', '#003992', '#3976C5','#98BFE0'],
+          color: [ '#98BFE0', '#3976C5','#003992','#003160',],
           textStyle: {
             color: '#fff'
           },
@@ -37,6 +37,8 @@
             orient: 'vertical', // 图例列表的布局朝向。
             x: 'right',
             y: 'bottom',
+            left:'80%',
+            top:'52%',
             textStyle: {
               color: '#fff'
             },

@@ -15,33 +15,41 @@
       return {
         option :{
           title: {
-            text: '堆叠区域图'
+//            text: '堆叠区域图'
           },
-          color: [ '#61F27E', '#F4C41B', '#FC6701'],
-          tooltip : {
-            trigger: 'axis',
-            axisPointer: {
+        color: [ '#61F27E', '#F4C41B', '#FC6701'],
+        tooltip : {
+           trigger: 'axis',
+           axisPointer: {
               type: 'cross',
               label: {
                 backgroundColor: '#6a7985'
               }
             }
-          },
-          legend: {
+        },
+        legend: {
+            show:true,
+            orient:'horizontal',
+            icon:'rack',
+            borderColor:"#333",
+          radius: ['50%', '70%'],
             textStyle: {
-              color: '#fff'
-            },
-            data:['安装量', '活跃用户', '启动次数']
-          },
+              color: '#fff',
+              paddingLeft:'20px',
+              borderRadius:1,
+              fontSize:16
+           },
+          data:['安装量', '活跃用户', '启动次数']
+        },
           toolbox: {
             feature: {
-              saveAsImage: {}
+//              saveAsImage: {}
             }
           },
           grid: {
-            left: '7%',
+            left: '4%',
             right: '7%',
-            bottom: '12%',
+            bottom: '20%',
             containLabel: true
           },
           xAxis: [
@@ -78,7 +86,7 @@
           name: '数量',
           axisLine: {
             lineStyle: {
-              color: ['#71a4f2'],
+              color: ['#ffffff'],
               width: '2',
               type: 'solid'
             }
@@ -95,6 +103,7 @@
               show: true
             }
           },
+
           axisPointer: {
             show: true
           }
@@ -104,7 +113,7 @@
             {
               name:'安装量',
               type:'line',
-              stack: '总量',
+              stack: '总量',//stack设置不一样时候就不会堆叠
 //              areaStyle: {normal: {}},
               areaStyle: {
                 normal: {
@@ -128,7 +137,7 @@
                 normal: {
                   color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                     offset: 0,
-                    color:  '#F4C41B'
+                    color: '#F4C41B'
                   }, {
                     offset: 1,
                     color: '#223'
@@ -157,120 +166,6 @@
             }
           ]
         }
-
-//        option:{
-//          title: {
-//            text: '',
-//            color:'#fff'
-//          },
-//          color: ['#60f07c', '#f86600', '#fc8e26', '#14da7e'],
-//          legend: {
-//            center: 'center',
-//            top: '3',
-//            textStyle: {
-//              color: '#fff'
-//            },
-//            data: [ '安装量', '活跃用户', '启动次数']
-//          },
-//          toolbox: {
-//            feature: {
-//              saveAsImage: {}
-//            }
-//          },
-//          tooltip: {
-//            trigger: 'axis'
-//          },
-//          textStyle: {
-//            color: '#ffffff'
-//          },
-//          grid: {
-//            left: '7%',
-//            right: '7%',
-//            bottom: '12%',
-//            containLabel: true
-//          },
-//          xAxis: [
-//            {
-//              name: '日期',
-//              boundaryGap: false,
-//              splitLine: {//网格线
-//                lineStyle: {// 网格线color
-//                  color: ['rgba(113,164,242,0.3)']
-//                },
-//                width: '1',
-//                type: 'solid',
-//                show: true
-//              },
-//              axisLine: {
-//                lineStyle: {
-//                  color: ['rgb(113,164,242,0.3)'],
-//                  width:'2',
-//                  type: 'solid'
-//                }
-//              },
-//              saveAsImage:true,
-//              axisTick: {
-//                show: true,
-//                alignWithLabel: true
-//              },
-//              data: ['08-23', '09-24', '09-25', '09-26', '09-27', '09-28', '09-29']
-//            }
-//          ],
-//          yAxis: [
-//        {
-//          type: 'value',
-//          name: '数量',
-//          axisLine: {
-//            lineStyle: {
-//              color: ['#71a4f2'],
-//              width: '2',
-//              type: 'solid'
-//            }
-//          },
-//          axisTick: {
-//            show: false,
-//            alignWithLabel: true
-//          },
-//          splitLine: {
-//            lineStyle: {
-//              color: ['rgba(113,164,242,0.3)'],//网格线
-//              width: '1',
-//              type: 'solid',
-//              show: true
-//            }
-//          },
-//          axisPointer: {
-//            show: true
-//          }
-//        }
-//      ],
-//          series: [
-//            {
-//              name: '安装量',
-//              type: 'line',
-//              smooth: true,
-//              stack: '总量',
-//              areaStyle: {normal: {}},
-//              data: [65, 93, 62, 111, 31, 89, 114]
-//            },
-//            {
-//              name: '活跃用户',
-//              type: 'line',
-//              smooth: true,
-//              stack: '总量',
-//              areaStyle: {normal: {}},
-//              data: [42, 33, 222, 31, 61, 63, 114]
-//            },
-//            {
-//              name: '启动次数',
-//              type: 'line',
-//              smooth: true,
-//              stack: '总量',
-//              areaStyle: {normal: {}},
-//              data: [88, 63, 12, 111, 11, 113, 64]
-//            }
-//          ]
-//        }
       }
     },
     mounted() {
@@ -307,11 +202,12 @@
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('myChart1'))
         // 绘制图表
+        myChart.setOption(this.option)
+
 //        window.onresize = myChart.resize//自适应
          window.addEventListener("resize",function(){
             myChart.resize()
        })
-        myChart.setOption(this.option)
       }
     }
   }

@@ -1,7 +1,7 @@
 <template>
   <article class="lists" @click="sendMessageToChild()">
 
-    <div id="myChart2" ></div>
+    <div id="myChart2"  :style="{width: '100%', height: '100%'}"></div>
   </article>
 </template>
 <script>
@@ -25,20 +25,23 @@
             }
           },
           legend: {
+            icon:'stack',
             textStyle: {
-              color: '#fff'
+              color: '#fff',
+              fontSize:18,
+              borderRadius: [5, 5, 0, 0],
             },
             data:[ 'pv', 'uv', 'ip']
           },
           toolbox: {
             feature: {
-              saveAsImage: {}
+//              saveAsImage: {}
             }
           },
           grid: {
-            left: '7%',
-            right: '7%',
-            bottom: '12%',
+            left: '1%',
+            right: '5%',
+            bottom: '20%',
             containLabel: true
           },
           xAxis: [
@@ -48,7 +51,7 @@
               boundaryGap: false,
               axisLine: {
                 lineStyle: {
-                  color: ['#71a4f2'],
+                  color: ['#ffffff'],
                   width: '2',
                   type: 'solid'
                 }
@@ -74,7 +77,7 @@
               name: '数量',
               axisLine: {
                 lineStyle: {
-                  color: ['#71a4f2'],
+                  color: ['#ffffff'],
                   width: '2', //边线宽度
                   type: 'solid'
                 }
@@ -162,7 +165,9 @@
       document.getElementById('myChart2').style.width=clientW*0.47+ 'px'
       document.getElementById('myChart2').style.height=clientH*0.3+ 'px'
       this.drawLine()
-
+    },
+    updata() {
+      console.log(42323)
     },
     methods: {
       sendAjax(){
@@ -173,8 +178,9 @@
           let web_uv_lastdays=[]
       this.$http.get(this.httpApi+'/showweb')
       .then(function (res) {
+        console.log(res)
         that.response = res
-        console.log(that.response)
+//        console.log(that.response)
 //        获取时间  IP  PV uv
         JSON.parse(that.response.data[0].web_ip_lastdays).forEach(function(item){
           time.unshift(item.datetime)
@@ -206,20 +212,22 @@
       drawLine() {
         // 基于准备好的dom，初始化echarts实例
         let myChart = this.$echarts.init(document.getElementById('myChart2'))
-        // 绘制图表、
-        window.onresize = myChart.resize;//自适应
+        // 绘制图表
+        window.addEventListener("resize",function(){
+          myChart.resize()
+        })
         myChart.setOption(this.option)
+
       }
     },
     watch:{
       option : {
         handler: function (n ,o) {
-          console.log("change ")
           setTimeout(this.sendMessageToChild,3)
           this.drawLine()
         },
         deep: true
-      }
+      },
     }
   }
 </script>

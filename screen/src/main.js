@@ -10,10 +10,12 @@ import { DatePicker } from 'element-ui'
 Vue.use(DatePicker)
 import 'element-ui/lib/theme-chalk/index.css'
 //Vue.use(ElementUI)
+import $ from 'jquery'
+import Carousel3d from 'vue-carousel-3d';//首页3d-banner图
+Vue.use(Carousel3d);
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
-
 //ajax 请求的URL
 Vue.prototype.httpApi = 'http://big-screen.com'
 

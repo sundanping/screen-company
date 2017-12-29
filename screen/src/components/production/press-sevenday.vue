@@ -10,14 +10,13 @@
     data() {
       return {
        time:[]
-
-      }
+       }
     },
     mounted() {
       let clientW = window.innerWidth
       let clientH = window.innerHeight
-      document.getElementById('press-seven').style.width = clientW * 0.6 + 'px'
-      document.getElementById('press-seven').style.height = clientH * 0.24 + 'px'
+      document.getElementById('press-seven').style.width = clientW * 0.64 + 'px'
+      document.getElementById('press-seven').style.height = clientH * 0.26 + 'px'
 //      console.log(clientW,'clientW',window.innerHeight,99,document.getElementById('app').style.height, clientH, 999, document.body,document.body.scrollHeight, document.getElementById('press-seven').style.height)
       this.setTime()
       this.drawLine()
@@ -38,9 +37,9 @@
       drawLine() {
         let myChart = this.$echarts.init(document.getElementById('press-seven'))
 
-//        window.addEventListener("resize",function(){
-//          myChart.resize()
-//        })
+        window.addEventListener("resize",function(){
+          myChart.resize()
+        })
        let option = {
           title: {
             text:'demo',
@@ -59,27 +58,15 @@
               }
             }
           },
-//          legend: {
-//            axisLine:{
-//              lineStyle:{
-//                color:'#fff',//y轴字体颜色
-//                width:1
-//              }
-//            },
-//            textStyle:{
-//              color:'#fff'
-//            },
-//            data:['发稿量']
-//          },
           toolbox: {
             feature: {
 //              saveAsImage: {}
             }
           },
           grid: {
-            top:'5%',
-            left: '6.9%',
-            right: '1%',
+            top:'6%',
+            left: '6%',
+            right: '3%',
             bottom: '9%'
 //            containLabel: true
           },
@@ -115,7 +102,7 @@
 //              name: '数量',
               axisLine: {
                 lineStyle: {
-                  color: ['#71a4f2'],
+                  color: ['#fff'],
                   width: '2',
                   type: 'solid'
                 }

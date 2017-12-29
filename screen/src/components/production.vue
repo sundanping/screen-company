@@ -1,9 +1,9 @@
 
 <template>
   <article class="article">
-    <header id="header">
+    <header style="padding-bottom: .5%" id="header">
       <span>{{userStatistics}}</span>
-      <span @click="$router.go(-1)">{{goBack}}</span>
+      <span  @click="$router.go(-1)">{{goBack}}</span>
     </header>
     <section id="product">
       <section class="left">
@@ -115,22 +115,22 @@
   }
 
   header{
-    border-bottom:1px dotted #006ce1;
+    border-bottom:1px dashed #006ce1;
     width: 100%;
     overflow: hidden;
   }
   header span{
-    font-size: 20px;
+    font-size: 2.2rem;
     overflow: hidden;
   }
   header span:last-child{
     float: right;
-    background-color: #bfbfbf;
+    background-color: rgba(233,233,233,.2);
     padding: 0 5px;
   }
   /*图标栏*/
   #product{
-    height:97%;
+    height:96%;
     display:flex;
     overflow:hidden;
   }
@@ -139,7 +139,7 @@
     height:100%;
   }
   .left>div{
-    height: 32%;
+    height: 31.3%;
     margin-top:1.3%;
     overflow: hidden;
   }

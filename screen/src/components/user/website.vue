@@ -1,34 +1,53 @@
 <template>
   <div class="lists ">
-    <div class="" id="website" :style="{width: '100%', height: '90%'}"></div>
-    <!--<div :style="{width: '100%', height: '90%'}">-->
-      <!--<leiji></leiji>-->
-    <!--</div>-->
+
+    <div id="circle-wrap" :style="{width: '100%', height: '95%'}">
+      <!--<div class="" id="website" :style="{width: '100%', height: '90%'}"></div>-->
+      <div id="circle-middle"  style="border:25px solid #1e6aed;border-radius: 50%;">
+        <span style="line-height:0;" v-if="showPie==0">
+          <span>pv访问量:</span>
+          <span>{{install[0]}}</span>
+        </span>
+        <span v-else-if="showPie==1"> uv访问量:{{install[1]}}</span>
+        <span v-else-if="showPie==2"> ip访问量:{{install[2]}}</span>
+      </div>
+      <!--<transition name="fade" >-->
+      <div class="right-warning" v-if="showPie==0">
+          pv访问量:{{install[0]}}
+        </div>
+      <!--</transition>-->
+      <div class="right-warning" v-else-if="showPie==1">
+        uv访问量:{{install[1]}}
+      </div>
+      <div class="right-warning" v-else-if="showPie==2">
+        ip安装量:{{install[2]}}
+      </div>
+    </div>
     <div class="lists-right-website">
-      <div style="background-color: rgba(213,213,213,.3)" class="count-install">
+      <div  class="count-install" :class="showPie*1 === 0? 'countBackground':null" @mouseover="showPie=0">
           <h1>
             累计PV：{{install[0]}}
             <!--累计PV:暂无数据-->
           </h1>
-          <div style="background-color: #666;z-index: 5;width:80%">
+          <div class="bg-666-4">
             <div name="count" id="install2" class="prediction-linear-user"></div>
           </div>
       </div>
-      <div class="count-install">
+      <div class="count-install" :class="showPie*1 === 1? 'countBackground':null" @mouseover="showPie=1">
         <h1>
-          累计UV：{{install[1]}}
+          累计UV： {{install[1]}}
           <!--累计UV:暂无数据-->
         </h1>
-        <div style="background-color: #666;width:80%">
+        <div class="bg-666-4">
           <div name="count" id="start-up2" class="prediction-linear-user"></div>
         </div>
       </div>
-      <div class="count-install">
+      <div class="count-install" :class="showPie*1 === 2? 'countBackground':null" @mouseover="showPie=2">
         <h1>
           累计IP：{{install[2]}}
           <!--累计IP:暂无数据-->
         </h1>
-        <div style="background-color: #666;width:80%">
+        <div class="bg-666-4">
           <div  name="count" id="regist2" class="prediction-linear-user"></div>
         </div>
       </div>
@@ -36,83 +55,95 @@
   </div>
 </template>
 <script>
-//  let clue = require('../../json/clue.json')
-//  import leiji from './leiji'
-  import bus from './../../js/eventBus.js'
 
+
+  import bus from './../../js/eventBus.js'
   export default {
     name: 'website',
     components:{
     },
     data () {
       return {
+        showPie:0,
         message:{a:12},
-        option:{
-//          color: [ '#47abdc', '#1F6AEE'],
-          color: [ '#1F6AEE'],
-          textStyle: {
-            color: '#fff'
+        option: {
+          tooltip: {
+            formatter: "{a} <br/>{b}: {c} ({d}%)"
           },
-          legend: {
-            orient: 'vertical', // 图例列表的布局朝向。
-            x: 'right',
-            y: 'bottom',
-            textStyle: {
-              color: '#fff'
-            },
-            data: [ 'PC', '移动']
-          },
+          color: ['#1f6aed'],
+//          legend: {
+//            orient: 'vertical',
+//            x: 'right',
+//            y:'bottom',
+//            textStyle: {
+//              color: '#fff'
+//            },
+//            data:'Android'
+//          },
+          calculable : true,
           series: [
             {
-//              name: '任务统计',
-              type: 'pie',
-              radius: ['50%', '70%', '40%'], // 圆环
+              name:'网站累计',
+              type:'pie',
+              radius: ['50%', '70%'],
               avoidLabelOverlap: false,
               label: {
                 normal: {
-                  show: true,
-                  formatter: ' {d}%',
-                  textStyle: {
-                    fontSize: '14',
-                    fontWeight: 'bold'
-                  }
+                  show: false,
+                  position: 'center'
                 },
                 emphasis: {
                   show: true,
                   textStyle: {
-                    fontSize: '16',
+                    fontSize: '30',
                     fontWeight: 'bold'
                   }
                 }
-              },  // 折线
+              },
               labelLine: {
                 normal: {
-                  show: true
+                  show: false
                 }
-              },  // 移入之后折线
-              data: [
-                {value: 400, name: 'PC'},
-                {value: 400, name: '移动'}
+              },
+              data:[
+                {value:22, name:'累计PV'},
               ]
             }
           ]
         },
-//        lists: clue.data,
         install: [232, 232, 232]
       }
     },
     created () {
     },
+    computed: {
+    },
     mounted () {
+      let wh = Math.min(this.getId('circle-wrap').clientWidth,this.getId('circle-wrap').clientHeight)
+      this.getId('circle-middle').style.width=wh*.68+'px'
+      this.getId('circle-middle').style.height=wh*.68+'px'
+      this.getId('circle-middle').style.lineHeight=wh*.68-50+'px'
       let clientW = window.innerWidth
-      let clientH = window.innerHeight
-      this.getId('website').style.width=clientW*0.46/2.2+ 'px'
-      this.getId('website').style.height=clientH*0.26+ 'px'
-      this.drawLine()
+//      let clientH = window.innerHeight
+//      this.getId('website').style.width=clientW*0.46/2.2+ 'px'
+//      this.getId('website').style.height=clientH*0.26+ 'px'
       let self = this
+
       bus.$on('msg',function(res){
-        console.log(res)
+//        console.log(res)
         self.message = res
+      })
+      this.setHeight()
+      setTimeout(this.getWidth,500)
+//      let clientW = window.innerWidth
+//      let clientH = window.innerHeight
+//      this.getId('website').style.width=clientW*0.46/2.2+ 'px'
+//      this.getId('website').style.height=clientH*0.26+ 'px'
+//      this.drawLine()
+      let selfq = this
+      bus.$on('msg',function(res){
+//        console.log(res)
+        selfq.message = res
       })
       this.setHeight()
       setTimeout(this.getWidth,500)
@@ -126,10 +157,10 @@
       },
       setHeight() {
         let that = this
-        console.log(that.message)
+//        console.log(that.message)
 //        this.message.web_uv_accumulate
         this.install.splice(0, 3, this.message.web_pv_accumulate , this.message.web_uv_accumulate ,this.message.web_ip_accumulate)
-        console.log(this.install)
+//        console.log(this.install)
         let maxValue = Math.max(...this.install);
         if (maxValue > 0) {
           this.getId('install2').style.width = (this.install[0] / maxValue) * 100 + '%'||30+'px'
@@ -153,12 +184,11 @@
     },
     watch: {
       message:{
-            handler: function (newValue,oldValue) {
-              this.getWidth()
-              console.log(3243242342343243)
-            },
-            deep: true
-          }
+        handler: function (newValue,oldValue) {
+          this.getWidth()
+        },
+        deep: true
+      }
     }
   }
 </script>
@@ -168,61 +198,65 @@
     height: 100%;
     padding: 5px;
     display: flex;
-    overflow: hidden;}
-  .contents{
-    height: 100% ;
-    width: 100%;
-  }
-   .grayscale{
-    -webkit-filter:grayscale(1);
+    overflow: hidden;
   }
 
-  .lists div{
+.website{
+  border:1px solid #333;
+
+}
+  .lists >div{
     flex:1;
-    width: 100%;
     overflow: hidden;
-  }
-  .lists {
-    width: 100%;
-    height: 100%;
-    flex-basis: 100%;
-    position: relative;
-    padding: 5px;
-    overflow: hidden;
-  }
-
-  .lists > div {
-    width: 50%;
-    float: left;
-    overflow: hidden;
-  }
-
-  .contents {
-    height: 100%;
-    width: 100%;
-  }
-
-  .contents > #website {
-    /*min-width: 200px;*/
-    color: red;
-  }
-
-  .lists-right-website {;
-    padding: 3% 20px;
   }
   .count-install {
-    flex-direction: column;
-    height: 20%;
-    margin-left: 15%;
-    margin-top: 5%;
+    /*flex-direction: column;*/
+    height: 25%;
+    padding:2% 1% 0 5%;
+    margin :3% 20% 0 10%;
     overflow: hidden;
+    border-radius: 5px;
   }
 
+.bg-666-4{
+  background-color: rgba(233,233,233,.1);width:88%
+}
+  .right-warning{
+    position: absolute;
+    text-align: center;
+    font-weight: 600;
+    left:30%;
+    margin-top:-12%;
+    width: 20%;
+    padding: 10px;
+    border-radius: 3px;
+    background-color: rgba(233,233,233,.1);
+  }
+  #circle-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #circle-middle{
+    transition-duration: .4s;
+    text-align: center;
+    position: relative;
+    top:-20px;
+
+  }
+  #circle-middle:hover{
+    transform:scale(1.2);
+    border:25px solid #1533e6;
+  }
+  .countBackground{
+    background-color: rgba(147, 148, 149, 0.2);
+  }
   .count-install  div {
     border-radius: 6px;
     height: 12px;
+    /*width: 80%!important;*/
     position: relative;
-
+    top:5%;
   }
   .count-install> div> div{
     position:absolute;
@@ -234,18 +268,33 @@
   .prediction-linear-user {
     display: inline-block;
     z-index: 10;
-    background: -webkit-linear-gradient(to right, #5c9dfc, #5d9afd); /* Safari 5.1 - 6.0 */
-    background: -o-linear-gradient(to right, #5c9dfc, #5d9afd); /* Opera 11.1 - 12.0 */
-    background: -moz-linear-gradient(to right, #5c9dfc, #5d9afd); /* Firefox 3.6 - 15 */
-    background: linear-gradient(to right, #5c9dfc, #5d9afd); /* 标准的语法（必须放在最后） */
+    background: -webkit-linear-gradient(to right, #5c9dfc, #48d6fd,#5c9dfc); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(to right, #5c9dfc, #48d6fd,#5c9dfc); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(to right,  #5c9dfc, #48d6fd,#5c9dfc); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right,  #5c9dfc, #48d6fd,#5c9dfc); /* 标准的语法（必须放在最后） */
   }
 
 </style>
 <style>
-  #website > div canvas
-  {
-    top: -14%!important;
+  .fade-enter-active,.fade-leave-active{
+    transition: all 1s ease;
   }
+  .fade-enter-active{
+    opacity: 1;
+
+  }
+  .fade-leave-active{
+    opacity: 0;
+
+  }
+  /* 需要注意的是.fade-enter必须在.fade-enter-active的后面定义才行 */
+  .fade-enter,.fade-leave{
+    opacity: 0;
+
+  }
+</style>
+<style>
+
   </style>
 
 

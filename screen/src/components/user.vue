@@ -7,7 +7,7 @@
     </header>
     <section >
       <fieldset id="app-count">
-        <legend >APP累计</legend>
+        <legend style="position: relative;z-index:-1;">APP累计</legend>
         <div><total-app :app-total="response" v-if="flag"></total-app></div>
 
       </fieldset>
@@ -86,6 +86,7 @@
         that.flag= false
         this.$http.get(this.httpApi+'/showapp')
           .then(function (res) {
+            console.log(res)
             that.response = res
             that.flag=true
 //            console.log(that.response)
@@ -124,7 +125,7 @@
     overflow:hidden;
   }
   header{
-    border-bottom:1px dotted #006ce1;
+    border-bottom:1px dashed #006ce1;
     width: 100%;
     height: 6%;
     margin-bottom:1%;
@@ -132,14 +133,16 @@
     overflow: hidden;
   }
   header span{
-    font-size: 22px;
+    font-size: 2.2rem;
     overflow: hidden;
+    position: absolute;
   }
   header span:last-child{
     float: right;
+    /*font-size: 22px;*/
     position:relative;
     bottom:2px;
-    background-color: #bfbfbf;
+    background-color: rgba(233,233,233,.4);
     padding: 0 5px;
   }
   #app-count >div{
